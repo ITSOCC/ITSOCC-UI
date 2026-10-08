@@ -554,7 +554,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:12.6px;min-width:760px}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
 }
-html[data-motion="reduced"] *,html[data-motion="reduced"] *::before,html[data-motion="reduced"] *::after{
+html[data-motion-state="reduced"] *,html[data-motion-state="reduced"] *::before,html[data-motion-state="reduced"] *::after{
   animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
 
 /* ============================================================
@@ -2199,7 +2199,7 @@ function applyTheme(){
   store('theme',state.theme);
 }
 function applyMotion(){
-  document.documentElement.setAttribute('data-motion',state.motion);
+  document.documentElement.setAttribute('data-motion-state',state.motion);
   store('motion',state.motion);
 }
 
@@ -2388,7 +2388,8 @@ document.addEventListener('click',function(ev){
   n=up(t,'[data-confirm-guardrail]'); if(n){ closeAll(); toast('Action approved','Isolation queued · approver recorded · audit entry written.','bad'); return; }
   n=up(t,'[data-view-toggle]'); if(n){ toast('View switched','Table and Kanban stay in sync.'); return; }
   n=up(t,'[data-saved]'); if(n){ toast('Saved view loaded',n.getAttribute('data-saved')+' is now active.'); return; }
-  n=up(t,'[data-motion]'); if(n){ state.motion=n.getAttribute('data-motion'); applyMotion(); helpModal(); toast('Motion updated',state.motion==='reduced'?'Animations reduced.':'Full animation enabled.'); return; }
+  n=up(t,'[data-motion]');
+  if(n && n.tagName==='BUTTON' && n.hasAttribute('data-motion')){ state.motion=n.getAttribute('data-motion'); applyMotion(); helpModal(); toast('Motion updated',state.motion==='reduced'?'Animations reduced.':'Full animation enabled.'); return; }
   n=up(t,'[data-theme-toggle]'); if(n){ state.theme=state.theme==='dark'?'light':'dark'; applyTheme(); render(); return; }
   n=up(t,'[data-tab]'); if(n){
     var sibs=n.parentNode.querySelectorAll('.tab');
